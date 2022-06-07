@@ -1,6 +1,12 @@
 #!/bin/bash -e
 
 SLS=$(npm bin)/sls
+SLS_ARGS=
+
+if [[ "$1" == "-v" ]]; then
+  shift
+  SLS_ARGS="--verbose --debug='*'"
+fi
 
 toggle_test_mode() {
   if grep -q "INCLUDE_CHANGE = False" handler.py ; then
@@ -19,8 +25,8 @@ fi
 set -x
 
 # First, deploy both layer and function, with just arrow
-$SLS deploy
-$SLS invoke --function hello --data '{}'
+$SLS deploy $SLS_ARGS
+$SLS invoke --function hello --data '{}' $SLS_ARGS
 
 # Then, add pendulum to requirements.txt and use it in handler.py
 trap toggle_test_mode EXIT
@@ -33,5 +39,5 @@ fi
 
 # Finally, deploy again. The layer won't get updated and the function
 # invocation will fail with an import error.
-$SLS deploy ${func_args}
-$SLS invoke --function hello --data '{}'
+$SLS deploy ${func_args} $SLS_ARGS
+$SLS invoke --function hello --data '{}' $SLS_ARGS
