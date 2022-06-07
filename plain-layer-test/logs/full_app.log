@@ -1,0 +1,98 @@
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls deploy --verbose '--debug='\''*'\'''
+
+Deploying plain-layer-test to stage dev (us-east-1)
+
+Excluding development dependencies for layer "hello"
+Excluding development dependencies for service package
+Layer hello is already uploaded.
+Skipped uploading hello
+Uploading CloudFormation file to S3
+Uploading State file to S3
+Skipped uploading hello
+Uploading service plain-layer-test.zip file to S3 (1.89 kB)
+  UPDATE_IN_PROGRESS - AWS::CloudFormation::Stack - plain-layer-test-dev
+  UPDATE_IN_PROGRESS - AWS::Lambda::Function - HelloLambdaFunction
+  UPDATE_COMPLETE - AWS::Lambda::Function - HelloLambdaFunction
+  CREATE_IN_PROGRESS - AWS::Lambda::Version - HelloLambdaVersionCo8ok7UFmMhXr4QHrxXkMgPSz3PoWH1wRt6Vy6NJr3U
+  CREATE_IN_PROGRESS - AWS::Lambda::Version - HelloLambdaVersionCo8ok7UFmMhXr4QHrxXkMgPSz3PoWH1wRt6Vy6NJr3U
+  CREATE_COMPLETE - AWS::Lambda::Version - HelloLambdaVersionCo8ok7UFmMhXr4QHrxXkMgPSz3PoWH1wRt6Vy6NJr3U
+  UPDATE_COMPLETE_CLEANUP_IN_PROGRESS - AWS::CloudFormation::Stack - plain-layer-test-dev
+  DELETE_SKIPPED - AWS::Lambda::Version - HelloLambdaVersionLG5EjW95LiVnmnuUtQ4wPdReoBjYTMsQiwY6A0EEk
+  UPDATE_COMPLETE - AWS::CloudFormation::Stack - plain-layer-test-dev
+Removing old service artifacts from S3
+
+✔ Service deployed to stack plain-layer-test-dev (33s)
+
+functions:
+  hello: plain-layer-test-dev-hello (1.9 kB)
+layers:
+  hello: arn:aws:lambda:us-east-1:<account-id>:layer:hello:7
+
+Stack Outputs:
+  HelloLambdaLayerQualifiedArn: arn:aws:lambda:us-east-1:<account-id>:layer:hello:7
+  HelloLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:<account-id>:function:plain-layer-test-dev-hello:8
+  ServerlessDeploymentBucketName: plain-layer-test-dev-serverlessdeploymentbucket-fgzbcabxp1h2
+  HelloLambdaLayerHash: bc0af78c0a1aa81db4f477d2aaefbfbb4475bc97
+  HelloLambdaLayerS3Key: serverless/plain-layer-test/dev/1654609551978-2022-06-07T13:45:51.978Z/hello.zip
+
+Toggle on monitoring with the Serverless Dashboard: run "serverless"
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls invoke --function hello --data '{}' --verbose '--debug='\''*'\'''
+{
+    "statusCode": 200,
+    "body": "{\"message\": \"Go Serverless v3.0! Your function executed successfully with text from function in layer!\", \"input\": {}}"
+}
++ trap toggle_test_mode EXIT
++ toggle_test_mode
++ grep -q 'INCLUDE_CHANGE = False' handler.py
++ sed -i.bak 's/\(INCLUDE_CHANGE\) = False/\1 = True/' handler.py layer/hello_layer.py
++ func_args=
++ [[ '' == \f\u\n\c\t\i\o\n ]]
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls deploy --verbose '--debug='\''*'\'''
+
+Deploying plain-layer-test to stage dev (us-east-1)
+
+Excluding development dependencies for layer "hello"
+Excluding development dependencies for service package
+Uploading CloudFormation file to S3
+Uploading State file to S3
+Uploading service plain-layer-test.zip file to S3 (2.79 kB)
+Uploading service hello.zip file to S3 (560 B)
+  UPDATE_IN_PROGRESS - AWS::CloudFormation::Stack - plain-layer-test-dev
+  UPDATE_IN_PROGRESS - AWS::Lambda::LayerVersion - HelloLambdaLayer
+  UPDATE_IN_PROGRESS - AWS::Lambda::LayerVersion - HelloLambdaLayer
+  UPDATE_COMPLETE - AWS::Lambda::LayerVersion - HelloLambdaLayer
+  UPDATE_IN_PROGRESS - AWS::Lambda::Function - HelloLambdaFunction
+  UPDATE_COMPLETE - AWS::Lambda::Function - HelloLambdaFunction
+  CREATE_IN_PROGRESS - AWS::Lambda::Version - HelloLambdaVersion7m7lJlhe7xQbvNwRMRQAypn5H1JD6SA6wcrDOp8GsE
+  CREATE_IN_PROGRESS - AWS::Lambda::Version - HelloLambdaVersion7m7lJlhe7xQbvNwRMRQAypn5H1JD6SA6wcrDOp8GsE
+  CREATE_COMPLETE - AWS::Lambda::Version - HelloLambdaVersion7m7lJlhe7xQbvNwRMRQAypn5H1JD6SA6wcrDOp8GsE
+  UPDATE_COMPLETE_CLEANUP_IN_PROGRESS - AWS::CloudFormation::Stack - plain-layer-test-dev
+  DELETE_IN_PROGRESS - AWS::Lambda::LayerVersion - HelloLambdaLayer
+  DELETE_SKIPPED - AWS::Lambda::Version - HelloLambdaVersionCo8ok7UFmMhXr4QHrxXkMgPSz3PoWH1wRt6Vy6NJr3U
+  DELETE_COMPLETE - AWS::Lambda::LayerVersion - HelloLambdaLayer
+  UPDATE_COMPLETE - AWS::CloudFormation::Stack - plain-layer-test-dev
+Removing old service artifacts from S3
+
+✔ Service deployed to stack plain-layer-test-dev (78s)
+
+functions:
+  hello: plain-layer-test-dev-hello (2.8 kB)
+layers:
+  hello: arn:aws:lambda:us-east-1:<account-id>:layer:hello:8
+
+Stack Outputs:
+  HelloLambdaLayerQualifiedArn: arn:aws:lambda:us-east-1:<account-id>:layer:hello:8
+  HelloLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:<account-id>:function:plain-layer-test-dev-hello:9
+  ServerlessDeploymentBucketName: plain-layer-test-dev-serverlessdeploymentbucket-fgzbcabxp1h2
+  HelloLambdaLayerHash: ae098b475e53814bb6b5b7b67d1e5c2adbc9b938
+  HelloLambdaLayerS3Key: serverless/plain-layer-test/dev/1654612417399-2022-06-07T14:33:37.399Z/hello.zip
+
+Toggle on monitoring with the Serverless Dashboard: run "serverless"
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls invoke --function hello --data '{}' --verbose '--debug='\''*'\'''
+{
+    "statusCode": 200,
+    "body": "{\"message\": \"Go Serverless v3.0! Your function executed successfully with text from function in layer and other text from layer too!\", \"input\": {}}"
+}
++ toggle_test_mode
++ grep -q 'INCLUDE_CHANGE = False' handler.py
++ sed -i.bak 's/\(INCLUDE_CHANGE\) = True/\1 = False/' handler.py layer/hello_layer.py

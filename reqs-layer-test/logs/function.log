@@ -1,0 +1,91 @@
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls deploy --verbose '--debug='\''*'\'''
+
+Deploying reqs-layer-test to stage dev (us-east-1)
+
+Generated requirements from /Users/brhiggins/src/serverless-layer-test/reqs-layer-test/requirements.txt in /Users/brhiggins/src/serverless-layer-test/reqs-layer-test/.serverless/requirements.txt
+Using static cache of requirements found at /Users/brhiggins/Library/Caches/serverless-python-requirements/68205384ad91201f36e1cb48de5f62eb3f7897c518a4517e042e26ddd0f3145a_x86_64_slspyc
+Excluding development dependencies for service package
+Packaging Python Requirements Lambda Layer
+Found cached Python Requirements Lambda Layer file
+Uploading CloudFormation file to S3
+Uploading State file to S3
+Uploading service reqs-layer-test.zip file to S3 (4.46 kB)
+Uploading service pythonRequirements.zip file to S3 (498.27 kB)
+  UPDATE_IN_PROGRESS - AWS::CloudFormation::Stack - reqs-layer-test-dev
+  UPDATE_IN_PROGRESS - AWS::Lambda::LayerVersion - PythonRequirementsLambdaLayer
+  UPDATE_IN_PROGRESS - AWS::Lambda::LayerVersion - PythonRequirementsLambdaLayer
+  UPDATE_COMPLETE - AWS::Lambda::LayerVersion - PythonRequirementsLambdaLayer
+  UPDATE_IN_PROGRESS - AWS::Lambda::Function - HelloLambdaFunction
+  UPDATE_COMPLETE - AWS::Lambda::Function - HelloLambdaFunction
+  CREATE_IN_PROGRESS - AWS::Lambda::Version - HelloLambdaVersionNQq0AmFtku8Cf0BK6dAgBj3M2dXd3yxHora7F4boJtE
+  CREATE_IN_PROGRESS - AWS::Lambda::Version - HelloLambdaVersionNQq0AmFtku8Cf0BK6dAgBj3M2dXd3yxHora7F4boJtE
+  CREATE_COMPLETE - AWS::Lambda::Version - HelloLambdaVersionNQq0AmFtku8Cf0BK6dAgBj3M2dXd3yxHora7F4boJtE
+  UPDATE_COMPLETE_CLEANUP_IN_PROGRESS - AWS::CloudFormation::Stack - reqs-layer-test-dev
+  DELETE_IN_PROGRESS - AWS::Lambda::LayerVersion - PythonRequirementsLambdaLayer
+  DELETE_SKIPPED - AWS::Lambda::Version - HelloLambdaVersionPDKh5ZnZcs8R3fIZBBFQvNtfzaOOYy50hoyzSCzp4
+  DELETE_COMPLETE - AWS::Lambda::LayerVersion - PythonRequirementsLambdaLayer
+  UPDATE_COMPLETE - AWS::CloudFormation::Stack - reqs-layer-test-dev
+Removing old service artifacts from S3
+
+✔ Service deployed to stack reqs-layer-test-dev (91s)
+
+functions:
+  hello: reqs-layer-test-dev-hello (4.5 kB)
+layers:
+  pythonRequirements: arn:aws:lambda:us-east-1:<account-id>:layer:reqs-layer-test-dev-python-requirements:11
+
+Stack Outputs:
+  PythonRequirementsLambdaLayerS3Key: serverless/reqs-layer-test/dev/1654612230285-2022-06-07T14:30:30.285Z/pythonRequirements.zip
+  PythonRequirementsLambdaLayerQualifiedArn: arn:aws:lambda:us-east-1:<account-id>:layer:reqs-layer-test-dev-python-requirements:11
+  HelloLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:<account-id>:function:reqs-layer-test-dev-hello:15
+  PythonRequirementsLambdaLayerHash: cd2a4ab3f0ec2230916eb634ebbdad19409b96e7
+  ServerlessDeploymentBucketName: reqs-layer-test-dev-serverlessdeploymentbucket-196os0j1rncs
+
+Toggle on monitoring with the Serverless Dashboard: run "serverless"
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls invoke --function hello --data '{}' --verbose '--debug='\''*'\'''
+{
+    "statusCode": 200,
+    "body": "{\"message\": \"Go Serverless v3.0! Your function executed successfully at (arrow) 2022-06-07T14:32:04.642215+00:00!\", \"input\": {}}"
+}
++ trap toggle_test_mode EXIT
++ toggle_test_mode
++ grep -q 'INCLUDE_CHANGE = False' handler.py
++ sed -i.bak 's/^# \(pendulum\)/\1/' requirements.txt
++ sed -i.bak 's/\(INCLUDE_CHANGE\) = False/\1 = True/' handler.py
++ func_args=
++ [[ function == \f\u\n\c\t\i\o\n ]]
++ func_args='function --function hello'
++ rm -f .serverless/pythonRequirements.zip
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls deploy function --function hello --verbose '--debug='\''*'\'''
+
+Deploying function hello to stage dev (us-east-1)
+
+Generated requirements from /Users/brhiggins/src/serverless-layer-test/reqs-layer-test/requirements.txt in /Users/brhiggins/src/serverless-layer-test/reqs-layer-test/.serverless/requirements.txt
+Using static cache of requirements found at /Users/brhiggins/Library/Caches/serverless-python-requirements/492b7fb319c96ed0046fad1d60098435c55a68ab2dba12f38575f92c64cdd6a7_x86_64_slspyc
+Excluding development dependencies for function "hello"
+Packaging Python Requirements Lambda Layer
+Found cached Python Requirements Lambda Layer file
+
+✔ Function code deployed (2s)
+Configuration did not change. Configuration update skipped. (2s)
+Retrying ensure function state for function: hello.
+
+Toggle on monitoring with the Serverless Dashboard: run "serverless"
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls invoke --function hello --data '{}' --verbose '--debug='\''*'\'''
+{
+    "errorMessage": "Unable to import module 'handler': No module named 'pendulum'",
+    "errorType": "Runtime.ImportModuleError",
+    "stackTrace": []
+}
+Environment: darwin, node 12.21.0, framework 3.19.0 (local), plugin 6.2.2, SDK 4.3.2
+Credentials: Local, "default" profile
+Docs:        docs.serverless.com
+Support:     forum.serverless.com
+Bugs:        github.com/serverless/serverless/issues
+
+Error:
+Invoked function failed
++ toggle_test_mode
++ grep -q 'INCLUDE_CHANGE = False' handler.py
++ sed -i.bak 's/^\(pendulum\)/# \1/' requirements.txt
++ sed -i.bak 's/\(INCLUDE_CHANGE\) = True/\1 = False/' handler.py

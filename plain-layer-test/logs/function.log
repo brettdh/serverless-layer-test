@@ -1,0 +1,79 @@
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls deploy --verbose '--debug='\''*'\'''
+
+Deploying plain-layer-test to stage dev (us-east-1)
+
+Excluding development dependencies for layer "hello"
+Excluding development dependencies for service package
+Uploading CloudFormation file to S3
+Uploading State file to S3
+Uploading service plain-layer-test.zip file to S3 (3.37 kB)
+Uploading service hello.zip file to S3 (560 B)
+  UPDATE_IN_PROGRESS - AWS::CloudFormation::Stack - plain-layer-test-dev
+  UPDATE_IN_PROGRESS - AWS::Lambda::LayerVersion - HelloLambdaLayer
+  UPDATE_IN_PROGRESS - AWS::Lambda::LayerVersion - HelloLambdaLayer
+  UPDATE_COMPLETE - AWS::Lambda::LayerVersion - HelloLambdaLayer
+  UPDATE_IN_PROGRESS - AWS::Lambda::Function - HelloLambdaFunction
+  UPDATE_COMPLETE - AWS::Lambda::Function - HelloLambdaFunction
+  CREATE_IN_PROGRESS - AWS::Lambda::Version - HelloLambdaVersionWhlMiSLeaUOXhWfDOKbq4LLN5jdsgl1NttwNCWFyAM
+  CREATE_IN_PROGRESS - AWS::Lambda::Version - HelloLambdaVersionWhlMiSLeaUOXhWfDOKbq4LLN5jdsgl1NttwNCWFyAM
+  CREATE_COMPLETE - AWS::Lambda::Version - HelloLambdaVersionWhlMiSLeaUOXhWfDOKbq4LLN5jdsgl1NttwNCWFyAM
+  UPDATE_COMPLETE_CLEANUP_IN_PROGRESS - AWS::CloudFormation::Stack - plain-layer-test-dev
+  DELETE_IN_PROGRESS - AWS::Lambda::LayerVersion - HelloLambdaLayer
+  DELETE_SKIPPED - AWS::Lambda::Version - HelloLambdaVersion7m7lJlhe7xQbvNwRMRQAypn5H1JD6SA6wcrDOp8GsE
+  DELETE_COMPLETE - AWS::Lambda::LayerVersion - HelloLambdaLayer
+  UPDATE_COMPLETE - AWS::CloudFormation::Stack - plain-layer-test-dev
+Removing old service artifacts from S3
+
+✔ Service deployed to stack plain-layer-test-dev (81s)
+
+functions:
+  hello: plain-layer-test-dev-hello (3.4 kB)
+layers:
+  hello: arn:aws:lambda:us-east-1:<account-id>:layer:hello:9
+
+Stack Outputs:
+  HelloLambdaLayerQualifiedArn: arn:aws:lambda:us-east-1:<account-id>:layer:hello:9
+  HelloLambdaFunctionQualifiedArn: arn:aws:lambda:us-east-1:<account-id>:function:plain-layer-test-dev-hello:10
+  ServerlessDeploymentBucketName: plain-layer-test-dev-serverlessdeploymentbucket-fgzbcabxp1h2
+  HelloLambdaLayerHash: bc0af78c0a1aa81db4f477d2aaefbfbb4475bc97
+  HelloLambdaLayerS3Key: serverless/plain-layer-test/dev/1654612514948-2022-06-07T14:35:14.948Z/hello.zip
+
+Toggle on monitoring with the Serverless Dashboard: run "serverless"
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls invoke --function hello --data '{}' --verbose '--debug='\''*'\'''
+{
+    "statusCode": 200,
+    "body": "{\"message\": \"Go Serverless v3.0! Your function executed successfully with text from function in layer!\", \"input\": {}}"
+}
++ trap toggle_test_mode EXIT
++ toggle_test_mode
++ grep -q 'INCLUDE_CHANGE = False' handler.py
++ sed -i.bak 's/\(INCLUDE_CHANGE\) = False/\1 = True/' handler.py layer/hello_layer.py
++ func_args=
++ [[ function == \f\u\n\c\t\i\o\n ]]
++ func_args='function --function hello'
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls deploy function --function hello --verbose '--debug='\''*'\'''
+
+Deploying function hello to stage dev (us-east-1)
+
+Excluding development dependencies for function "hello"
+
+✔ Function code deployed (2s)
+Configuration did not change. Configuration update skipped. (2s)
+Retrying ensure function state for function: hello.
++ /Users/brhiggins/src/serverless-layer-test/node_modules/.bin/sls invoke --function hello --data '{}' --verbose '--debug='\''*'\'''
+{
+    "errorMessage": "Unable to import module 'handler': cannot import name 'layer_function_two' from 'hello_layer' (/opt/hello_layer.py)",
+    "errorType": "Runtime.ImportModuleError",
+    "stackTrace": []
+}
+Environment: darwin, node 12.21.0, framework 3.19.0 (local), plugin 6.2.2, SDK 4.3.2
+Credentials: Local, "default" profile
+Docs:        docs.serverless.com
+Support:     forum.serverless.com
+Bugs:        github.com/serverless/serverless/issues
+
+Error:
+Invoked function failed
++ toggle_test_mode
++ grep -q 'INCLUDE_CHANGE = False' handler.py
++ sed -i.bak 's/\(INCLUDE_CHANGE\) = True/\1 = False/' handler.py layer/hello_layer.py
