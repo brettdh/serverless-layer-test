@@ -1,0 +1,44 @@
+#!/bin/bash -e
+
+SLS=$(npm bin)/sls
+
+toggle_test_mode() {
+  if grep -q "INCLUDE_CHANGE = False" handler.py ; then
+    sed -i.bak 's/^# \(pendulum\)/\1/' requirements.txt
+    sed -i.bak 's/\(INCLUDE_CHANGE\) = False/\1 = True/' handler.py
+  else
+    sed -i.bak 's/^\(pendulum\)/# \1/' requirements.txt
+    sed -i.bak 's/\(INCLUDE_CHANGE\) = True/\1 = False/' handler.py
+  fi
+}
+
+if ! grep -q "INCLUDE_CHANGE = False" handler.py \
+   || grep -q "^pendulum" requirements.txt ; then
+  echo >&2 "Not in clean state; bailing out"
+  exit 1
+fi
+
+
+set -x
+
+# First, deploy both layer and function, with just arrow
+$SLS deploy
+$SLS invoke --function hello --data '{}'
+
+# Then, add pendulum to requirements.txt and use it in handler.py
+trap toggle_test_mode EXIT
+toggle_test_mode
+
+func_args=
+if [[ "$1" == "function" ]]; then
+  func_args="function --function hello"
+  # If we don't do this, we get EEXIST from serverless-python-requirements
+  # when it tries to create this file as a symlink, rather than the
+  # more quiet failure-to-upload-layer bug that we're trying to see
+  rm -f .serverless/pythonRequirements.zip
+fi
+
+# Finally, deploy again. The layer won't get updated and the function
+# invocation will fail with an import error.
+$SLS deploy ${func_args}
+$SLS invoke --function hello --data '{}'

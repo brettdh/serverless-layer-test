@@ -1,0 +1,23 @@
+service: plain-layer-test
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+
+functions:
+  hello:
+    handler: handler.hello
+    layers:
+      - !Ref HelloLambdaLayer
+    package:
+      patterns:
+        - "handler.py"
+
+layers:
+  hello:
+    path: layer
+    package:
+      patterns:
+        - "hello_layer.py"

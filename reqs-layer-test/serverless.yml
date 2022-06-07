@@ -1,0 +1,22 @@
+service: reqs-layer-test
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.8
+
+functions:
+  hello:
+    handler: handler.hello
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    layer: true
